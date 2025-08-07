@@ -1,0 +1,72 @@
+;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+};p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
+n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","//jdgqm89u6pi63ovpo423i.s.decidata.tv/v3.7.0.js","snowplow"));
+  
+snowplow("newTracker", "sp", "jdgqm89u6pi63ovpo423i.t.decidata.tv", {
+  appId: "jdgqm89u6pi63ovpo423i",
+  discoverRootDomain: !0,
+});
+
+snowplow("trackPageView");
+
+try {
+  function trackContact(id) {
+    var firstnameInput = document.getElementById("full_nameid-" + id);
+    var lastnameInput = document.getElementById("last_nameid-" + id);
+    var emailInput = document.getElementById("emailid-" + id);
+    var jobInput = document.getElementById("whoIs_id-" + id);
+    var telInput = document.getElementById("phoneid-" + id);
+
+    if (
+      !firstnameInput ||
+      !lastnameInput ||
+      !emailInput ||
+      !jobInput ||
+      !telInput
+    ) {
+      return false;
+    }
+
+    var firstname = firstnameInput.value;
+    var lastname = lastnameInput.value;
+    var email = emailInput.value;
+    var job = jobInput.value;
+    var tel = telInput.value;
+
+    if (!firstname || !lastname || !email || !job || !tel) {
+      return false;
+    }
+
+    var jobId = job.id;
+
+    snowplow("addTrans", {
+      orderId: "1234",
+      total: 0,
+      affiliation: email,
+      city: jobId == 1 ? "empresario" : (jobId == 2 || jobId == 3 || jobId == 4) ? "aliado" : undefined
+    });
+
+    snowplow("trackTrans");
+  }
+
+  window.onload = function () {
+    var form0 = document.getElementById('form_id-0');
+    var form1 = document.getElementById('form_id-1');
+    var form2 = document.getElementById('form_id-2');
+
+    if (form0) {
+      form0.addEventListener("submit", () => trackContact(0));
+    }
+
+    if (form1) {
+      form1.addEventListener("submit", () => trackContact(1));
+    }
+
+    if (form2) {
+      form2.addEventListener("submit", () => trackContact(2));
+    }
+  };
+} catch (e) {
+  console.log(e);
+}
